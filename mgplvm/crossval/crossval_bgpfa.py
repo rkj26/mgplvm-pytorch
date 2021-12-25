@@ -2,7 +2,7 @@ import numpy as np
 import copy
 import torch
 from .train_model import train_model
-from .crossval import not_in, update_params
+from .crossval import not_in, update_params, test_cv
 from ..manifolds import Euclid
 from ..likelihoods import Gaussian, NegativeBinomial, Poisson
 from ..rdist import GP_circ, GP_diag
