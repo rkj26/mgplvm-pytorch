@@ -27,7 +27,7 @@ def train_cv_bgpfa_trials(Y,
     
     _, n, m = Y.shape
 
-    Y1 = Y[train_trials, :, :]
+    Y1 = Y[:train_trials, :, :]
     
     ##### fit the first model!!!! ####
     n_samples, n, T = Y1.shape
