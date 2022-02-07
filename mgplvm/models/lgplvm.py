@@ -72,7 +72,7 @@ class Lvgplvm(Gplvm):
                  learn_scale=None,
                  Y=None,
                 rel_scale = 1,
-                 Bayesian = True
+                 Bayesian = True,
                  C = None,
                 q_mu = None, q_sqrt = None, scale = None, dim_scale = None, neuron_scale = None):
         """
