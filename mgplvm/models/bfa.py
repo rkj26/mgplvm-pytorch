@@ -867,11 +867,12 @@ class bVFAB(GpBase):
                 scale = None,
                 dim_scale = None,
                 neuron_scale = None):
+        
+        super().__init__()
         self.n = n
         self.d = d
         self.m = m
         self.n_samples = n_samples
-        self.spike_likelihood, self.behavior_likelihood = likelihoods       
         _scale = torch.ones(1)
         _dim_scale = torch.ones(d)
         _neuron_scale = torch.ones(n)
@@ -929,7 +930,7 @@ class bVFAB(GpBase):
 
         self._q_mu = nn.Parameter(q_mu, requires_grad=True)
         self._q_sqrt = nn.Parameter(q_sqrt, requires_grad=True)
-
+        self.spike_likelihood, self.behavior_likelihood = likelihoods
 
     @property
     def scale(self):
