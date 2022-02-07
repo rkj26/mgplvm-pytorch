@@ -859,7 +859,6 @@ class bVFAB(GpBase):
                  q_sqrt: Optional[Tensor] = None,
                  tied_samples=True,
                  Y = None,
-                 B = None,
                  learn_neuron_scale=False,
                  ard=False,
                  learn_scale=None,
@@ -879,11 +878,10 @@ class bVFAB(GpBase):
         if learn_scale is None:
             learn_scale = not (ard or learn_neuron_scale)
 
-        if Y is not None and B is not None:
-            data = np.concatenate((Y, B), axis=-2)
-            n_samples_fa, n_fa, m_fa = data.shape
+        if Y is not None:
+            n_samples_fa, n_fa, m_fa = Y.shape
             mod = decomposition.FactorAnalysis(n_components=d)
-            Y_fa = data.transpose(0, 2, 1).reshape(n_samples_fa * m_fa, n_fa)
+            Y_fa = Y.transpose(0, 2, 1).reshape(n_samples_fa * m_fa, n_fa)
             Ymudata = mod.fit_transform(Y_fa)  #m*n_samples x d
             C = torch.tensor(mod.components_.T)  # (n x d)
             if learn_scale:
