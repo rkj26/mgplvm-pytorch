@@ -1,4 +1,5 @@
 from __future__ import print_function
+from typing import List, Optional
 import numpy as np
 from ..utils import softplus
 from . import svgp
@@ -16,7 +17,7 @@ from ..lpriors.common import Lprior
 from ..rdist import Rdist
 from .gp_base import GpBase
 
-from .bfa import Fa, Bfa, Bvfa, vFa
+from .bfa import Fa, Bfa, Bvfa, bVFAB, vFa
 from .gplvm import Gplvm
 
 
@@ -64,14 +65,14 @@ class Lvgplvm(Gplvm):
                  n_samples: int,
                  lat_dist: Rdist,
                  lprior: Lprior,
-                 likelihood: Likelihood,
+                 likelihoods: List[Likelihood],
                  tied_samples=True,
                  learn_neuron_scale=False,
                  ard=False,
                  learn_scale=None,
                  Y=None,
                 rel_scale = 1,
-                 Bayesian = True,
+                 Bayesian = True
                  C = None,
                 q_mu = None, q_sqrt = None, scale = None, dim_scale = None, neuron_scale = None):
         """
@@ -83,11 +84,25 @@ class Lvgplvm(Gplvm):
         #observation model (P(Y|X))
         
         if Bayesian:
-            obs = Bvfa(n,
+            if len(likelihoods) == 1:
+                obs = Bvfa(n,
                        d,
                        m,
                        n_samples,
-                       likelihood,
+                       likelihoods[0],
+                       tied_samples=tied_samples,
+                       Y=Y,
+                       learn_neuron_scale=learn_neuron_scale,
+                       ard=ard,
+                       learn_scale=learn_scale,
+                      rel_scale = rel_scale,
+                      q_mu = q_mu, q_sqrt = q_sqrt, scale = scale, dim_scale = dim_scale, neuron_scale = neuron_scale)
+            else:
+                obs = bVFAB(n,
+                       d,
+                       m,
+                       n_samples,
+                       likelihoods,
                        tied_samples=tied_samples,
                        Y=Y,
                        learn_neuron_scale=learn_neuron_scale,
