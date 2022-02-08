@@ -1015,7 +1015,8 @@ class bVFAB(GpBase):
         # to compute an unbiased estimate of the likelihood of the full dataset
         m = (self.m if m is None else m)
         scale = (m / batch_size) * (self.n_samples / sample_size)
-        lik = spike_lik.sum(-2)+behavior_lik.sum(-2)
+        lik = np.concatenate((spike_lik, behavior_lik),axis = -1)
+        lik = lik.sum(-2)
         lik = lik * scale
         return lik, prior_kl
 
