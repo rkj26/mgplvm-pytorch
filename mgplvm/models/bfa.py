@@ -1015,7 +1015,7 @@ class bVFAB(GpBase):
         # to compute an unbiased estimate of the likelihood of the full dataset
         m = (self.m if m is None else m)
         scale = (m / batch_size) * (self.n_samples / sample_size)
-        lik = np.concatenate((spike_lik, behavior_lik),axis = -1)
+        lik = torch.cat((spike_lik, behavior_lik),axis = -1)
         lik = lik.sum(-2)
         lik = lik * scale
         return lik, prior_kl
@@ -1064,7 +1064,7 @@ class bVFAB(GpBase):
             y_samps = self.spike_likelihood.dist_mean(
                 f_samps[:, :, :-2, :])  #n_mc x n_samples x n x m
             b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, -2:, :])
-        Y_samps = np.concatenate((y_samps, b_samps), axis = 2)
+        Y_samps = torch.cat((y_samps, b_samps), axis = 2)
         if square:
             Y_samps = Y_samps**2
 
