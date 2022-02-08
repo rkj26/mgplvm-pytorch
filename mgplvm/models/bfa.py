@@ -871,6 +871,7 @@ class bVFAB(GpBase):
         self.n = n
         self.d = d
         self.m = m
+        self.tied_samples = tied_samples
         self.n_samples = n_samples
         _scale = torch.ones(1)
         _dim_scale = torch.ones(d)
