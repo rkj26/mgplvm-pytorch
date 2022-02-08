@@ -1055,16 +1055,18 @@ class bVFAB(GpBase):
 
         if noise:
             #sample from observation function p(y|f)
-            y_samps = self.likelihood.sample(f_samps)  #n_mc x n_samples x n x m
+            y_samps = self.spike_likelihood.sample(f_samps[:, :, :-2, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.sample(f_samps[:, :, -2:, :])
         else:
             #compute mean observations mu(f) for each f
-            y_samps = self.likelihood.dist_mean(
-                f_samps)  #n_mc x n_samples x n x m
-
+            y_samps = self.spike_likelihood.dist_mean(
+                f_samps[:, :, :-2, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, -2:, :])
+        Y_samps = np.concatenate((y_samps, b_samps), axis = 2)
         if square:
-            y_samps = y_samps**2
+            Y_samps = Y_samps**2
 
-        return y_samps
+        return Y_samps
 
     def predict(self,
                 x: Tensor,
@@ -1123,7 +1125,7 @@ class bVFAB(GpBase):
         return list(
             itertools.chain.from_iterable([
                 self.spike_likelihood.parameters(),
-                self.behavior_likelihood.parameter(),
+                self.behavior_likelihood.parameters(),
                 [self._scale, self._neuron_scale, self._dim_scale]
             ]))
 
@@ -1132,4 +1134,4 @@ class bVFAB(GpBase):
         newmsg = ('scale {:.3f} |').format(
             (self.scale.mean() * self.neuron_scale.mean() *
              self.dim_scale.mean()).item())
-        return newmsg + self.likelihood.msg
+        return newmsg + self.behaviour_likelihood.msg+self.spike_likelihood.msg
