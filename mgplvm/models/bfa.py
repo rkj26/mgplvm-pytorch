@@ -1006,7 +1006,7 @@ class bVFAB(GpBase):
             prior_kl = prior_kl * (self.n_samples / sample_size)
         Y = y[:, :-2, :]
         B = y[:, -2, :]
-
+        print(f_mean.shape, f_var.shape)
         #(n_mc, n_samles, n)
         spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean, f_var)
         behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean, f_var)
