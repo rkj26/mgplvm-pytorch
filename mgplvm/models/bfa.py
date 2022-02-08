@@ -1122,7 +1122,8 @@ class bVFAB(GpBase):
     def g1_parameters(self):
         return list(
             itertools.chain.from_iterable([
-                self.likelihood.parameters(),
+                self.spike_likelihood.parameters(),
+                self.behavior_likelihood.parameter(),
                 [self._scale, self._neuron_scale, self._dim_scale]
             ]))
 
