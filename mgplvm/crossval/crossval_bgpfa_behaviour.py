@@ -61,7 +61,7 @@ def train_cv_behavior(Y,
 
     q_mu, q_sqrt = mod.obs.q_mu.detach().cpu(), mod.obs.q_sqrt.detach().cpu()
     scale, dim_scale, neuron_scale = mod.obs.scale.detach().cpu(), mod.obs.dim_scale.detach().cpu().flatten(), mod.obs.neuron_scale.detach().cpu().flatten()
-    mod = Lvgplvm(n, T, d_fit, n_samples, lat_dist, lprior, [spike_lik], ard = ard, learn_scale = (not ard),
+    mod = Lvgplvm(n, T, d_fit, n_samples, lat_dist, lprior, [spike_lik, behaviour_lik], ard = ard, learn_scale = (not ard),
                 q_mu = q_mu, q_sqrt = q_sqrt, scale = scale, dim_scale = dim_scale, neuron_scale = neuron_scale,
                     Bayesian = True).to(device)
         
