@@ -53,10 +53,10 @@ def train_cv_behavior(Y,
     lprior = Null(manif)
     ell0 = mod.lat_dist.ell.detach().cpu()
     lat_dist = GP_circ(manif, T, n_samples, fit_ts, _scale=lat_scale, ell = ell0)
-    b_sigma = mod.obs.likelihoods[1].sigma.detach().cpu()
+    b_sigma = mod.obs.behavior_likelihood.sigma.detach().cpu()
     behaviour_lik = Gaussian(b.shape[-2], sigma=b_sigma)
 
-    c, d, total_count = [val.detach().cpu() for val in [mod.obs.likelihoods[0].c, mod.obs.likelihoods[0].d, mod.obs.likelihoods[0].total_count]]
+    c, d, total_count = [val.detach().cpu() for val in [mod.obs.spike_likelihood.c, mod.obs.spike_likelihood.d, mod.obs.spike_likelihood.total_count]]
     spike_lik = NegativeBinomial(n, c=c, d=d, total_count=total_count)
 
     q_mu, q_sqrt = mod.obs.q_mu.detach().cpu(), mod.obs.q_sqrt.detach().cpu()
