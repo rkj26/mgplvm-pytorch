@@ -279,7 +279,7 @@ class Bvfa(GpBase):
             Y_fa = Y.transpose(0, 2, 1).reshape(n_samples_fa * m_fa, n_fa)
             mudata = mod.fit_transform(Y_fa)  #m*n_samples x d
             C = torch.tensor(mod.components_.T)  # (n x d)
-            #print(C.shape)
+            print(C.shape)
             if learn_scale:
                 _scale = rel_scale*torch.square(C).mean().sqrt()  #global scale
             if learn_neuron_scale:
