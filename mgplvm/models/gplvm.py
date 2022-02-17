@@ -123,7 +123,7 @@ class Gplvm(nn.Module):
             svgp_lik = svgp_lik[..., neuron_idxs]
             svgp_kl = svgp_kl[..., neuron_idxs]
         lik = svgp_lik - svgp_kl
-
+        print(lik.shape)
         if analytic_kl or ('GP' in self.lat_dist.name):
             #print('analytic KL')
             #kl per MC sample; lq already represents the full KL
