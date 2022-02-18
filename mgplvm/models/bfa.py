@@ -1004,12 +1004,12 @@ class bVFAB(GpBase):
         prior_kl = prior_kl.sum(-2)
         if not self.tied_samples:
             prior_kl = prior_kl * (self.n_samples / sample_size)
-        Y = y[:, :-2, :]
-        B = y[:, -2:, :]
+        Y = y[:, :35, :]
+        B = y[:, 35:, :]
         # print(f_mean.shape, f_var.shape)
         #(n_mc, n_samles, n)
-        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :-2, :], f_var[:, :, :-2, :])
-        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, -2:, :], f_var[:, :, -2:, :])
+        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :35, :], f_var[:, :, :35, :])
+        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, 35:, :], f_var[:, :, 35:, :])
         # print(spike_lik.shape, behavior_lik.shape)
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
@@ -1057,13 +1057,13 @@ class bVFAB(GpBase):
 
         if noise:
             #sample from observation function p(y|f)
-            y_samps = self.spike_likelihood.sample(f_samps[:, :, :-2, :])  #n_mc x n_samples x n x m
-            b_samps = self.behavior_likelihood.sample(f_samps[:, :, -2:, :])
+            y_samps = self.spike_likelihood.sample(f_samps[:, :, :35, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.sample(f_samps[:, :, 35:, :])
         else:
             #compute mean observations mu(f) for each f
             y_samps = self.spike_likelihood.dist_mean(
-                f_samps[:, :, :-2, :])  #n_mc x n_samples x n x m
-            b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, -2:, :])
+                f_samps[:, :, :35, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, 35:, :])
         Y_samps = torch.cat((y_samps, b_samps), axis = 2)
         if square:
             Y_samps = Y_samps**2
