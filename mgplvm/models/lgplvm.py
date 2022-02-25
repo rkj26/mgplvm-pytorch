@@ -74,6 +74,7 @@ class Lvgplvm(Gplvm):
                 rel_scale = 1,
                  Bayesian = True,
                  C = None,
+                ny=0,
                 q_mu = None, q_sqrt = None, scale = None, dim_scale = None, neuron_scale = None):
         """
         __init__ method for linear GPLVM with approximate posteriors and flexible noise models
@@ -101,6 +102,7 @@ class Lvgplvm(Gplvm):
                 obs = bVFAB(n,
                        d,
                        m,
+                       ny,
                        n_samples,
                        likelihoods,
                        tied_samples=tied_samples,

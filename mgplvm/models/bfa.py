@@ -853,6 +853,7 @@ class bVFAB(GpBase):
                  n: int,
                  d: int,
                  m: int,
+                 ny: int,
                  n_samples: int,
                  likelihoods: List[Likelihood],
                  q_mu: Optional[Tensor] = None,
@@ -871,6 +872,8 @@ class bVFAB(GpBase):
         self.n = n
         self.d = d
         self.m = m
+        self.ny = ny
+
         self.tied_samples = tied_samples
         self.n_samples = n_samples
         _scale = torch.ones(1)
@@ -1004,12 +1007,12 @@ class bVFAB(GpBase):
         prior_kl = prior_kl.sum(-2)
         if not self.tied_samples:
             prior_kl = prior_kl * (self.n_samples / sample_size)
-        Y = y[:, :35, :]
-        B = y[:, 35:, :]
+        Y = y[:, :self.ny, :]
+        B = y[:, self.ny:, :]
         # print(f_mean.shape, f_var.shape)
         #(n_mc, n_samles, n)
-        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :35, :], f_var[:, :, :35, :])
-        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, 35:, :], f_var[:, :, 35:, :])
+        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :self.nb, :], f_var[:, :, :self.nb, :])
+        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, self.ny:, :], f_var[:, :, self.ny:, :])
         # print(spike_lik.shape, behavior_lik.shape)
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
@@ -1057,13 +1060,13 @@ class bVFAB(GpBase):
 
         if noise:
             #sample from observation function p(y|f)
-            y_samps = self.spike_likelihood.sample(f_samps[:, :, :35, :])  #n_mc x n_samples x n x m
-            b_samps = self.behavior_likelihood.sample(f_samps[:, :, 35:, :])
+            y_samps = self.spike_likelihood.sample(f_samps[:, :, :self.ny, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.sample(f_samps[:, :, self.ny:, :])
         else:
             #compute mean observations mu(f) for each f
             y_samps = self.spike_likelihood.dist_mean(
-                f_samps[:, :, :35, :])  #n_mc x n_samples x n x m
-            b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, 35:, :])
+                f_samps[:, :, :self.ny, :])  #n_mc x n_samples x n x m
+            b_samps = self.behavior_likelihood.dist_mean(f_samps[:, :, self.ny:, :])
         Y_samps = torch.cat((y_samps, b_samps), axis = 2)
         if square:
             Y_samps = Y_samps**2
