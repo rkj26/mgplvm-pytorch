@@ -194,7 +194,7 @@ class Gplvm(nn.Module):
         print('forward', lik.shape, kl.shape)
         lik = lik.sum(-1).mean()
         kl = kl.mean()
-
+        print('forward', lik.shape, kl.shape)
         return lik, kl  #mean across batches, sum across everything else
 
     def calc_LL(self, data, n_mc, kmax=5, m=None):
