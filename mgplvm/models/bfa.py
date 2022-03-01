@@ -403,11 +403,13 @@ class Bvfa(GpBase):
 
         #(n_mc, n_samles, n)
         lik = self.likelihood.variational_expectation(y, f_mean, f_var)
+        print(lik.shape)
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
         m = (self.m if m is None else m)
         scale = (m / batch_size) * (self.n_samples / sample_size)
         lik = lik.sum(-2)
+        print(lik.shape)
         lik = lik * scale
         return lik, prior_kl
 
