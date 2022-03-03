@@ -279,7 +279,7 @@ class Bvfa(GpBase):
             Y_fa = Y.transpose(0, 2, 1).reshape(n_samples_fa * m_fa, n_fa)
             mudata = mod.fit_transform(Y_fa)  #m*n_samples x d
             C = torch.tensor(mod.components_.T)  # (n x d)
-            print(C.shape)
+            # print(C.shape)
             if learn_scale:
                 _scale = rel_scale*torch.square(C).mean().sqrt()  #global scale
             if learn_neuron_scale:
@@ -403,13 +403,13 @@ class Bvfa(GpBase):
 
         #(n_mc, n_samles, n)
         lik = self.likelihood.variational_expectation(y, f_mean, f_var)
-        print(lik.shape)
+        # print(lik.shape)
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
         m = (self.m if m is None else m)
         scale = (m / batch_size) * (self.n_samples / sample_size)
         lik = lik.sum(-2)
-        print(lik.shape)
+        # print(lik.shape)
         lik = lik * scale
         return lik, prior_kl
 
@@ -1009,7 +1009,7 @@ class bVFAB(GpBase):
         prior_kl = prior_kl.sum(-2)
         if not self.tied_samples:
             prior_kl = prior_kl * (self.n_samples / sample_size)
-        print(y.shape)
+        # print(y.shape)
         Y = y[:, :self.ny, :]
         B = y[:, self.ny:, :]
         # print(f_mean.shape, f_var.shape)
@@ -1023,9 +1023,9 @@ class bVFAB(GpBase):
         scale = (m / batch_size) * (self.n_samples / sample_size)
 
         lik = torch.cat((spike_lik, behavior_lik),axis = -1)
-        print(spike_lik.shape, behavior_lik.shape, lik.shape)
+        # print(spike_lik.shape, behavior_lik.shape, lik.shape)
         lik = lik.sum(-2)
-        print('Part2', spike_lik.shape, behavior_lik.shape, lik.shape)
+        # print('Part2', spike_lik.shape, behavior_lik.shape, lik.shape)
 
         lik = lik * scale
         return lik, prior_kl

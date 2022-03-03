@@ -142,7 +142,7 @@ def fit(dataset: Union[Tensor, DataLoader],
                                       neuron_idxs=neuron_idxs,
                                       m=prior_m,
                                       analytic_kl=analytic_kl)
-
+                print('loss', svgp_elbo.shape, kl.shape)
                 loss = (-svgp_elbo) + (ramp * kl)  # -LL
                 loss_vals.append(weight*loss.item()*mc_weight)
                 kl_vals.append(weight*kl.item()*mc_weight)

@@ -119,7 +119,7 @@ class Gplvm(nn.Module):
                                           g.transpose(-1, -2),
                                           sample_idxs,
                                           m=m)  #p(Y|g)
-        print('gplvm', svgp_lik.shape, svgp_kl.shape)
+        # print('gplvm', svgp_lik.shape, svgp_kl.shape)
         if neuron_idxs is not None:
             svgp_lik = svgp_lik[..., neuron_idxs]
             svgp_kl = svgp_kl[..., neuron_idxs]
@@ -133,7 +133,7 @@ class Gplvm(nn.Module):
             prior = self.lprior(g, batch_idxs)  #(n_mc)
             #print('prior, lq shapes:', prior.shape, lq.shape)
             kl = lq.sum(-1).sum(-1) - prior  #(n_mc) (sum q(g) over samples, conditions)
-        print('gplvm', lik.shape, kl.shape)
+        # print('gplvm', lik.shape, kl.shape)
         #rescale KL to entire dataset (basically structured conditions)
         batch_size = m if batch_idxs is None else len(batch_idxs)
         sample_size = n_samples if sample_idxs is None else len(sample_idxs)
@@ -191,10 +191,10 @@ class Gplvm(nn.Module):
                             m=m,
                             analytic_kl=analytic_kl)
         #sum over neurons and mean over  MC samples
-        print('forward', lik.shape, kl.shape)
+        # print('forward', lik.shape, kl.shape)
         lik = lik.sum(-1).mean()
         kl = kl.mean()
-        print('forward', lik.shape, kl.shape)
+        # print('forward', lik.shape, kl.shape)
         return lik, kl  #mean across batches, sum across everything else
 
     def calc_LL(self, data, n_mc, kmax=5, m=None):
