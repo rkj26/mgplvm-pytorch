@@ -19,7 +19,7 @@ class Stationary(Kernel, metaclass=abc.ABCMeta):
                  learn_scale=True,
                  Y: np.ndarray = None,
                  eps: float = 1e-6,
-                 ell_byneuron: bool = False):
+                 ell_byneuron: bool = True):
         """
         Parameters
         ----------
@@ -153,7 +153,7 @@ class QuadExp(Stationary):
                  learn_scale=True,
                  Y: np.ndarray = None,
                  eps: float = 1e-6,
-                 ell_byneuron: bool = False):
+                 ell_byneuron: bool = True):
         """
         Quadratic exponential kernel
 
