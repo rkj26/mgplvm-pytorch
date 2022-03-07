@@ -62,10 +62,11 @@ class GPbase(Rdist):
             _ell = torch.ones(1, self.d, 1) * (torch.max(ts) - torch.min(ts)) / 20
         else:
             if type(ell) in [float, int]:
-                _ell = torch.ones(1, self.d, 1) * ell
+                _ell = nn.Parameter(data=inv_softplus(ell), requires_grad=True)
+                self._ell = torch.ones(1, self.d, 1) * _ell
             else:
                 _ell = ell
-        self._ell = nn.Parameter(data=inv_softplus(_ell), requires_grad=True)
+        # self._ell = nn.Parameter(data=inv_softplus(_ell), requires_grad=True)
 
         #pre-compute time differences (only need one row for the toeplitz stuff)
         self.ts = ts
