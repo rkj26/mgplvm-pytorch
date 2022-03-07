@@ -62,7 +62,7 @@ class GPbase(Rdist):
             _ell = torch.ones(1, self.d, 1) * (torch.max(ts) - torch.min(ts)) / 20
         else:
             if type(ell) in [float, int]:
-                _ell = nn.Parameter(data=inv_softplus(ell), requires_grad=True)
+                _ell = nn.Parameter(data=inv_softplus(torch.tensor(ell)), requires_grad=True)
                 self._ell = torch.ones(1, self.d, 1) * _ell
             else:
                 _ell = ell
