@@ -876,6 +876,7 @@ class bVFAB(GpBase):
         self.m = m
         self.ny = ny
 
+        self.losses = []
         self.tied_samples = tied_samples
         self.n_samples = n_samples
         _scale = torch.ones(1)
@@ -1014,8 +1015,8 @@ class bVFAB(GpBase):
         B = y[:, self.ny:, :]
         # print(f_mean.shape, f_var.shape)
         #(n_mc, n_samles, n)
-        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :self.ny, :], f_var[:, :, :self.ny, :]).sum(-2)
-        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, self.ny:, :], f_var[:, :, self.ny:, :]).sum(-2)
+        spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :self.ny, :], f_var[:, :, :self.ny, :])
+        behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, self.ny:, :], f_var[:, :, self.ny:, :])
         # print(spike_lik.shape, behavior_lik.shape)
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
@@ -1023,6 +1024,7 @@ class bVFAB(GpBase):
         scale = (m / batch_size) * (self.n_samples / sample_size)
 
         lik = torch.cat((spike_lik, behavior_lik),axis = -1)
+        lik = lik.sum(-2)
         # print(spike_lik.shape, behavior_lik.shape, lik.shape)
         # print('Part2', spike_lik.shape, behavior_lik.shape, lik.shape)
         lik = lik * scale
