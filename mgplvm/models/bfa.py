@@ -266,7 +266,7 @@ class Bvfa(GpBase):
         #self.z, self.kernel = [NoneClass() for i in range(2)]
 
         #### initialize prior parameters ####
-
+        self.losses = []
         _scale = torch.ones(1)
         _dim_scale = torch.ones(d)
         _neuron_scale = torch.ones(n)
