@@ -169,8 +169,9 @@ class Gaussian(Likelihood):
             SVGP likelihood term per MC, neuron, sample (n_mc x n_samples x n)
         """
         n_mc, m = fmu.shape[0], fmu.shape[-1]
+        print(fmu.shape, y.shape)
         variance = self.prms  #(n)
-        #print(variance.shape)
+        print(variance.shape)
         ve1 = -0.5 * log2pi * m  #scalar
         ve2 = -0.5 * torch.log(variance) * m  #(n)
         ve3 = -0.5 * torch.square(y - fmu) / variance[
