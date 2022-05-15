@@ -172,7 +172,7 @@ class Gaussian(Likelihood):
         variance = self.prms  #(n)
         ve1 = -0.5 * log2pi * m  #scalar
         ve2 = -0.5 * torch.log(variance) * m  #(n)
-        ve3 = -0.5 * torch.square(torch.sub(y - fmu)) / variance[
+        ve3 = -0.5 * torch.square(y - fmu) / variance[
             None, ...]  #(n_mc x n_samples x n x m )
         ve4 = -0.5 * fvar / variance[..., None]  #(n_mc x n_samples x n x m)
 
