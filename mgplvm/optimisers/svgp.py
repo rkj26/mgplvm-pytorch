@@ -134,7 +134,6 @@ def fit(dataset: Union[Tensor, DataLoader],
                 else:
                     weight = len(batch_idxs) / m #fraction of time points
                 mc_weight = mc/n_mc #fraction of MC samples
-                print(sample_idxs, batch_idxs)
                 svgp_elbo, kl = model(batch,
                                       mc,
                                       batch_idxs=batch_idxs,
