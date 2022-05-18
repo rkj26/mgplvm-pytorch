@@ -18,6 +18,7 @@ def training_params(**kwargs):
         'print_every': 50,
         'lrate': 5E-2,
         'batch_pool': None,
+        'sample_pool': None,
         'neuron_idxs': None,
         'mask_Ts': None,
         'n_mc': 32,
