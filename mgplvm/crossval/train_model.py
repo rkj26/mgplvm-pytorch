@@ -24,7 +24,8 @@ def training_params(**kwargs):
         'prior_m': None,
         'analytic_kl': False,
         'accumulate_gradient': True,
-        'batch_mc': None
+        'batch_mc': None,
+        'sample_size': None,
     }
 
     for key, value in kwargs.items():
@@ -39,7 +40,7 @@ def training_params(**kwargs):
 def train_model(mod, data, params):
 
     dataloader = optimisers.data.BatchDataLoader(
-        data, batch_size=params['batch_size'], batch_pool=params['batch_pool'])
+        data, batch_size=params['batch_size'], batch_pool=params['batch_pool'], sample_pool = params['sample_pool'], sample_size=params['sample_size'])
 
     trained_mod = optimisers.svgp.fit(
         dataloader,
