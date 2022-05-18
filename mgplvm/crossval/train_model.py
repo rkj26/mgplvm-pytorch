@@ -18,7 +18,6 @@ def training_params(**kwargs):
         'print_every': 50,
         'lrate': 5E-2,
         'batch_pool': None,
-        'sample_pool': None,
         'neuron_idxs': None,
         'mask_Ts': None,
         'n_mc': 32,
@@ -26,7 +25,6 @@ def training_params(**kwargs):
         'analytic_kl': False,
         'accumulate_gradient': True,
         'batch_mc': None,
-        'sample_size': None,
     }
 
     for key, value in kwargs.items():
@@ -41,7 +39,7 @@ def training_params(**kwargs):
 def train_model(mod, data, params):
 
     dataloader = optimisers.data.BatchDataLoader(
-        data, batch_size=params['batch_size'], batch_pool=params['batch_pool'], sample_pool = params['sample_pool'], sample_size=params['sample_size'])
+        data, batch_size=params['batch_size'], batch_pool=params['batch_pool'])
 
     trained_mod = optimisers.svgp.fit(
         dataloader,
