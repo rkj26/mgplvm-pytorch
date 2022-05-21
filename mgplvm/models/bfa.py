@@ -1024,11 +1024,14 @@ class bVFAB(GpBase):
         # scale is (m / batch_size) * (self.n_samples / sample size)
         # to compute an unbiased estimate of the likelihood of the full dataset
 
+        print(spike_lik.shape, behavior_lik.shape)
 
         m = (self.m if m is None else m)
         scale = (m / batch_size) * (self.n_samples / sample_size)
 
         lik = torch.cat((spike_lik, behavior_lik),axis = -1)
+        print(spike_lik.shape, behavior_lik.shape)
+
         lik = lik.sum(-2)
         # print(spike_lik.shape, behavior_lik.shape, lik.shape)
         # print('Part2', spike_lik.shape, behavior_lik.shape, lik.shape)
