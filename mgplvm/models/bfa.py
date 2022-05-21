@@ -1030,9 +1030,10 @@ class bVFAB(GpBase):
         scale = (m / batch_size) * (self.n_samples / sample_size)
 
         lik = torch.cat((spike_lik, behavior_lik),axis = -1)
-        print(spike_lik.shape, behavior_lik.shape)
+        print(lik.shape, spike_lik.shape, behavior_lik.shape)
 
         lik = lik.sum(-2)
+        print(lik.shape)
         # print(spike_lik.shape, behavior_lik.shape, lik.shape)
         # print('Part2', spike_lik.shape, behavior_lik.shape, lik.shape)
         lik = lik * scale
