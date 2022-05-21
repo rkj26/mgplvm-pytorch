@@ -1018,7 +1018,7 @@ class bVFAB(GpBase):
         spike_lik = self.spike_likelihood.variational_expectation(Y, f_mean[:, :, :self.ny, :], f_var[:, :, :self.ny, :])
         behavior_lik = self.behavior_likelihood.variational_expectation(B, f_mean[:, :, self.ny:, :], f_var[:, :, self.ny:, :])
     
-        print(spike_lik.shape, behavior_lik.shape)
+        # print(spike_lik.shape, behavior_lik.shape)
         spike_lik = spike_lik.sum(-2)
         behavior_lik = behavior_lik.sum(-2)
         # scale is (m / batch_size) * (self.n_samples / sample size)
